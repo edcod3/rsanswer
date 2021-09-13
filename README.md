@@ -6,7 +6,7 @@
 Clone the repository
 
 ```bash
-git clone <giturl>
+git clone https://github.com/edcod3/rsanswer.git
 ```
 
 ### Setup
