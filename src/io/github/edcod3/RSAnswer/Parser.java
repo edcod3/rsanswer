@@ -5,14 +5,15 @@ import java.math.BigInteger;
 public class Parser {
 
     public static void Usage() {
-        String usageEncrypt = "Usage (Encryption): java -classpath bin io.github.edcod3.RSAnswer.RSAnswer encrypt -m <message> -e <exponent> -n <modulus>";
-        String usageDecrypt = "Usage (Decryption): java -classpath bin io.github.edcod3.RSAnswer.RSAnswer decrypt -c <ciphertext> -d <private key> -n <modulus>";
+        String usageEncrypt = "Usage (Encryption): java -classpath bin io.github.edcod3.RSAnswer.RSAnswer encrypt -m <message> -e <exponent> [-n <modulus>|-p P -q Q]";
+        String usageDecrypt = "Usage (Decryption): java -classpath bin io.github.edcod3.RSAnswer.RSAnswer decrypt -c <ciphertext> [-d <private key> -n <modulus>|-p P -q Q]";
         System.out.println(usageEncrypt);
         System.out.println(usageDecrypt);
 
     }
 
-    public static String ParseArgs(String[] args) {
+    public static String[] ParseArgs(String[] args) {
+        String modulusFactorsGiven = "Key-Pair";
         if (args[0].equals("encrypt")) {
             for (int i = 1; i < args.length; i++) {
                 switch (args[i]) {
@@ -25,6 +26,15 @@ public class Parser {
                     case "-n":
                         RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
                         break;
+                    case "-p":
+                        RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
+                        modulusFactorsGiven = "Modulus-Factors";
+                        break;
+                    case "-q":
+                        RSAnswer.RsaValues[2] = new BigInteger(args[i + 1]);
+                        modulusFactorsGiven = "Modulus-Factors";
+                        break;
+
                 }
             }
             if ((args.length < 7) || (RSAnswer.message == "")) {
@@ -43,6 +53,17 @@ public class Parser {
                     case "-n":
                         RSAnswer.RsaValues[2] = new BigInteger(args[i + 1]);
                         break;
+                    case "-p":
+                        RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
+                        modulusFactorsGiven = "Modulus-Factors";
+                        break;
+                    case "-q":
+                        RSAnswer.RsaValues[2] = new BigInteger(args[i + 1]);
+                        modulusFactorsGiven = "Modulus-Factors";
+                        break;
+                    case "-e":
+                        RSAnswer.RsaValues[3] = new BigInteger(args[i + 1]);
+                        break;
                 }
             }
             if ((args.length < 7) || (RSAnswer.message == "")) {
@@ -52,6 +73,9 @@ public class Parser {
         } else {
             Usage();
         }
-        return args[0];
+
+        String[] returnValues = { args[0], modulusFactorsGiven };
+
+        return returnValues;
     }
 }
