@@ -15,9 +15,6 @@ public class RSAnswer {
 
     public static void main(String[] args) {
         String[] operation = Parser.ParseArgs(args);
-        for (int i = 0; i < RsaValues.length; i++) {
-            System.out.printf("%d\n", RsaValues[i]);
-        }
         if (operation[0].equals("encrypt")) {
             Encrypt(operation);
         } else {
@@ -50,7 +47,6 @@ public class RSAnswer {
                 RsaValues[2].subtract(BigInteger.valueOf(1)) };
         BigInteger phi = subtractedFactors[0].multiply(subtractedFactors[1]);
         BigInteger d = RsaValues[3].modInverse(phi);
-        System.out.printf("%d\n", d);
         RsaValues[1] = d;
         return;
     }
