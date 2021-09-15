@@ -24,7 +24,9 @@ public class RSAnswer {
 
     public static void Encrypt(String[] calculationType) {
         if (calculationType[1].equals("Modulus-Factors")) {
-            CalculateModulus(calculationType[0]);
+            BigInteger modulus = CalculateModulus(calculationType[0]);
+            RsaValues[1] = modulus;
+            RsaValues[2] = BigInteger.valueOf(0);
         }
         BigInteger messageBigInt = Converter.StringToBigInt(message);
         BigInteger ciphertext = messageBigInt.modPow(RsaValues[0], RsaValues[1]);
@@ -33,31 +35,26 @@ public class RSAnswer {
 
     public static void Decrypt(String[] calculationType) {
         if (calculationType[1].equals("Modulus-Factors")) {
-            CalculateModulus(calculationType[0]);
-            CalculatePrivateKey();
+            BigInteger privateKey = CalculatePrivateKey();
+            BigInteger modulus = CalculateModulus(calculationType[0]);
+            RsaValues[1] = privateKey;
+            RsaValues[2] = modulus;
         }
         BigInteger plaintextBigInt = RsaValues[0].modPow(RsaValues[1], RsaValues[2]);
         String plaintext = Converter.BigIntToString(plaintextBigInt);
         System.out.printf("Plaintext: %s", plaintext);
     }
 
-    public static void CalculatePrivateKey() {
-        // FIXME: Calculation of private key is incorrect.
+    public static BigInteger CalculatePrivateKey() {
         BigInteger[] subtractedFactors = { RsaValues[1].subtract(BigInteger.valueOf(1)),
                 RsaValues[2].subtract(BigInteger.valueOf(1)) };
         BigInteger phi = subtractedFactors[0].multiply(subtractedFactors[1]);
         BigInteger d = RsaValues[3].modInverse(phi);
-        RsaValues[1] = d;
-        return;
+        return d;
     }
 
-    public static void CalculateModulus(String operationType) {
+    public static BigInteger CalculateModulus(String operationType) {
         BigInteger modulus = RsaValues[1].multiply(RsaValues[2]);
-        if (operationType.equals("encrypt")) {
-            RsaValues[1] = modulus;
-            RsaValues[2] = BigInteger.valueOf(0);
-        } else {
-            RsaValues[2] = modulus;
-        }
+        return modulus;
     }
 }

@@ -27,12 +27,12 @@ javac -d bin ./src/io/github/edcod3/RSAnswer/*.java
 
 Usage (Encryption):
 ```bash 
-java -classpath bin io.github.edcod3.RSAnswer.RSAnswer encrypt -m <message> -e <exponent> -n <modulus>
+java -classpath bin io.github.edcod3.RSAnswer.RSAnswer encrypt -m <message> -e <exponent> [-n <modulus>|-p P -q Q]
 ```
 
 Usage (Decryption): 
 ```bash
-java -classpath bin io.github.edcod3.RSAnswer.RSAnswer decrypt -c <ciphertext> -d <private key> -n <modulus>
+java -classpath bin io.github.edcod3.RSAnswer.RSAnswer decrypt -c <ciphertext> [-d <private key> -n <modulus>|-p P -q Q]
 ```
 
 ### To-Do
