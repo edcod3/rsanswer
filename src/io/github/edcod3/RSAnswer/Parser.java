@@ -21,17 +21,18 @@ public class Parser {
                         RSAnswer.message = args[i + 1];
                         break;
                     case "-e":
-                        RSAnswer.RsaValues[0] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("exponent", new BigInteger(args[i + 1]));
                         break;
                     case "-n":
-                        RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("modulus", new BigInteger(args[i + 1]));
+                        // RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
                         break;
                     case "-p":
-                        RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("p", new BigInteger(args[i + 1]));
                         modulusFactorsGiven = "Modulus-Factors";
                         break;
                     case "-q":
-                        RSAnswer.RsaValues[2] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("q", new BigInteger(args[i + 1]));
                         modulusFactorsGiven = "Modulus-Factors";
                         break;
 
@@ -45,24 +46,24 @@ public class Parser {
             for (int i = 1; i < args.length; i++) {
                 switch (args[i]) {
                     case "-c":
-                        RSAnswer.RsaValues[0] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("ciphertext", new BigInteger(args[i + 1]));
                         break;
                     case "-d":
-                        RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("d", new BigInteger(args[i + 1]));
                         break;
                     case "-n":
-                        RSAnswer.RsaValues[2] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("modulus", new BigInteger(args[i + 1]));
                         break;
                     case "-p":
-                        RSAnswer.RsaValues[1] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("p", new BigInteger(args[i + 1]));
                         modulusFactorsGiven = "Modulus-Factors";
                         break;
                     case "-q":
-                        RSAnswer.RsaValues[2] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("q", new BigInteger(args[i + 1]));
                         modulusFactorsGiven = "Modulus-Factors";
                         break;
                     case "-e":
-                        RSAnswer.RsaValues[3] = new BigInteger(args[i + 1]);
+                        RSAnswer.RsaValues.put("exponent", new BigInteger(args[i + 1]));
                         break;
                 }
             }

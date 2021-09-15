@@ -1,60 +1,54 @@
 package io.github.edcod3.RSAnswer;
 
 import java.math.BigInteger;
+import java.util.HashMap;
 
 public class RSAnswer {
 
-    // RSA Values for Encryption/Decyption
-    // Index 0: exponent/ciphertext
-    // Index 1: modulus or p/private key or p
-    // Index 2: empty or q/modulus or q
-    // Index 3: empty / empty or exponent
-    public static BigInteger[] RsaValues = new BigInteger[4];
+    public static HashMap<String, BigInteger> RsaValues = new HashMap<String, BigInteger>();
 
     public static String message;
 
     public static void main(String[] args) {
         String[] operation = Parser.ParseArgs(args);
         if (operation[0].equals("encrypt")) {
-            Encrypt(operation);
+            Encrypt(operation[1]);
         } else {
-            Decrypt(operation);
+            Decrypt(operation[1]);
         }
     }
 
-    public static void Encrypt(String[] calculationType) {
-        if (calculationType[1].equals("Modulus-Factors")) {
-            BigInteger modulus = CalculateModulus(calculationType[0]);
-            RsaValues[1] = modulus;
-            RsaValues[2] = BigInteger.valueOf(0);
+    public static void Encrypt(String calculationType) {
+        if (calculationType.equals("Modulus-Factors")) {
+            CalculateModulus();
         }
         BigInteger messageBigInt = Converter.StringToBigInt(message);
-        BigInteger ciphertext = messageBigInt.modPow(RsaValues[0], RsaValues[1]);
+        BigInteger ciphertext = messageBigInt.modPow(RsaValues.get("exponent"), RsaValues.get("modulus"));
         System.out.printf("Ciphertext: %d", ciphertext);
     }
 
-    public static void Decrypt(String[] calculationType) {
-        if (calculationType[1].equals("Modulus-Factors")) {
-            BigInteger privateKey = CalculatePrivateKey();
-            BigInteger modulus = CalculateModulus(calculationType[0]);
-            RsaValues[1] = privateKey;
-            RsaValues[2] = modulus;
+    public static void Decrypt(String calculationType) {
+        if (calculationType.equals("Modulus-Factors")) {
+            CalculatePrivateKey();
+            CalculateModulus();
         }
-        BigInteger plaintextBigInt = RsaValues[0].modPow(RsaValues[1], RsaValues[2]);
+        BigInteger plaintextBigInt = RsaValues.get("ciphertext").modPow(RsaValues.get("d"), RsaValues.get("modulus"));
         String plaintext = Converter.BigIntToString(plaintextBigInt);
         System.out.printf("Plaintext: %s", plaintext);
     }
 
-    public static BigInteger CalculatePrivateKey() {
-        BigInteger[] subtractedFactors = { RsaValues[1].subtract(BigInteger.valueOf(1)),
-                RsaValues[2].subtract(BigInteger.valueOf(1)) };
+    public static void CalculatePrivateKey() {
+        BigInteger[] subtractedFactors = { RsaValues.get("p").subtract(BigInteger.valueOf(1)),
+                RsaValues.get("q").subtract(BigInteger.valueOf(1)) };
         BigInteger phi = subtractedFactors[0].multiply(subtractedFactors[1]);
-        BigInteger d = RsaValues[3].modInverse(phi);
-        return d;
+        BigInteger d = RsaValues.get("exponent").modInverse(phi);
+        RsaValues.put("d", d);
     }
 
-    public static BigInteger CalculateModulus(String operationType) {
-        BigInteger modulus = RsaValues[1].multiply(RsaValues[2]);
-        return modulus;
+    public static void CalculateModulus() {
+        BigInteger modulus = RsaValues.get("p").multiply(RsaValues.get("q"));
+        RsaValues.remove("q");
+        RsaValues.remove("p");
+        RsaValues.put("modulus", modulus);
     }
 }
