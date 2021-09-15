@@ -39,10 +39,11 @@ public class Parser {
                 }
             }
             if ((args.length < 7) || (RSAnswer.message == "")) {
-                System.out.println("Missing Values!");
+                System.out.println("[!] Missing Values!");
                 Usage();
+                System.exit(-1);
             }
-        } else if (args[0].equals("decrypt")) {
+        } else if (args[0].equals("decrypt") || args[0].equals("attack")) {
             for (int i = 1; i < args.length; i++) {
                 switch (args[i]) {
                     case "-c":
@@ -68,11 +69,13 @@ public class Parser {
                 }
             }
             if ((args.length < 7) || (RSAnswer.message == "")) {
-                System.out.println("Missing Values!");
+                System.out.println("[!] Missing Values!");
                 Usage();
+                System.exit(-1);
             }
         } else {
             Usage();
+            System.exit(-1);
         }
 
         String[] returnValues = { args[0], modulusFactorsGiven };
